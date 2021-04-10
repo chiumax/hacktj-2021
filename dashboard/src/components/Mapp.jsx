@@ -22,6 +22,23 @@ const Mapp = () => {
             zoom: zoom
         });
 
+        map.on('load', function () {
+            map.addSource("route", {
+                "type": "geojson",
+                "data": "./crashes_2021.geojson"
+            });
+            console.log("brudda")
+            map.addLayer({
+                "id": "route",
+                "type": "circle",
+                "source": "route",
+                "paint": {
+                    "circle-radius": 10,
+                    "circle-color": "#ff0000"
+                }
+            });
+        });
+
         map.on('move', () => {
             setLng(map.getCenter().lng.toFixed(4));
             setLat(map.getCenter().lat.toFixed(4));
