@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import {useEffect} from "react";
+import Mapp from "./components/Mapp";
+
+
+
+
 
 function App() {
+
+
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          DC Data
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Mapp/>
       </header>
     </div>
   );
 }
 
 export default App;
+// sk.eyJ1Ijoicm9iZXJ0YmFvIiwiYSI6ImNrbmMyZ2gzYjFvcG8ydm96YThyend3NTUifQ.or5tfTKiG8ZaIrdaCZURWw
