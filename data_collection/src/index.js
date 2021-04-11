@@ -38,7 +38,10 @@ axios.get(url).then((res) => {
     var featuresForYear = master.features.filter(
       (feature) => feature.properties["REPORTDATE"].slice(0, 4) == year
     );
-    fiveyears.push(featuresForYear)
+    featuresForYear.forEach((feature) => {
+      fiveyears.features.push(feature)
+    })
+
     var toWrite = {
       type: "FeatureCollection",
       features: [],
