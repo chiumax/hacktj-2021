@@ -1,41 +1,46 @@
 var turf=require('@turf/turf')
-var fs = require('fs');
+const fs = require('fs-extra');
+const path = require("path");
+
 var obj = JSON.parse(fs.readFileSync('./clusters.geojson', 'utf8'));
+const outputPath = path.join(__dirname, "../clusterdata");
+
+fs.ensureDirSync(outputPath);
 
 
 
-var clusters = []
-obj.clusters.geojson.forEach(feature => {
-    //if cluster has not been found before, add it to the list of clusters (should be 10 in this case)
-    if(!clusters.includes(feature.properties["cluster"].slice(1)))
-      clusters.push(feature.properties["cluster"].slice(1))
-    clusters.features.push(feature)
-  })
+const clusters = [0,1,2,4,5,7,8,9]
+var counts = []
 
+var centroids={
+    type: "FeatureCollection",
+    features: []
+  }
 //make a new file for each cluster
   clusters.forEach(cluster => {
-    var filename = `crashes_${cluster}.geojson`
 
-    var featuresForCluster = master.features.filter(feature => feature.properties["cluster"].slice(0) == cluster)
+    var featuresForCluster = obj.features.filter(feature => feature.properties["cluster"] == cluster)
+    var vertices=[[]]
+    featuresForCluster.forEach(feature => {
+        vertices[0].push(feature.geometry.coordinates)
+    })
+    vertices[0].push(vertices[0][0])
+    //console.log(verticies[0])
+    console.log(vertices[0].length)
+    //var polygon=turf.polygon(vertices)
+    var points = turf.points(vertices[0])
+    // var options={"count": vertices[0].length}
+    counts.push(vertices[0].length)
+    centroids.features.push(turf.center(points))
 
-    var toWrite = {
-      type: "FeatureCollection",
-      features: []
-    }
+  })
 
-    toWrite.features = featuresForCluster
-
-    fs.writeFileSync(path.join(outputPath, filename), JSON.stringify(toWrite))
+  var index = 0
+  centroids.features.forEach(feature => {
+    feature.properties["count"] = counts[index++]
   })
 
 //append the centroid of each cluster to centroids
-var centroids = []
-for(feature in clusters){
-    centroids.push(turf.centroid(feature))
-}
+
 //write centroids to a json
-fs.writeFile("centroids.json",JSON.stringify(centroids),function(err){
-    if(err){        
-        console.log(err);
-    }
-});
+fs.writeFileSync("centroids.geojson",JSON.stringify(centroids));
