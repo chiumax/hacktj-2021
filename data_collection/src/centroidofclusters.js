@@ -27,12 +27,12 @@ var centroids={
     //console.log(verticies[0])
     console.log(vertices[0].length)
     var polygon=turf.polygon(vertices)
-
-    centroids.features.push(turf.centerOfMass(polygon,{"count": vertices[0].length}))
+    var options={"count": vertices[0].length}
+    centroids.features.push(turf.centerOfMass(polygon,options))
 
   })
 
 //append the centroid of each cluster to centroids
 
 //write centroids to a json
-fs.writeFileSync("centroids.json",JSON.stringify(centroids));
+fs.writeFileSync("centroids.geojson",JSON.stringify(centroids));
