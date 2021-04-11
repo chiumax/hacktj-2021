@@ -8,7 +8,7 @@ const DataManager = () => {
     0: { id: 0 },
   });
 
-  const [update, setUpdate] = useState(false);
+  const [update, setUpdate] = useState(0);
 
   return (
     <>
@@ -21,8 +21,8 @@ const DataManager = () => {
       <MapComponent
         filters={filters}
         setFilters={setFilters}
-        update={update}
-        setUpdate={setUpdate}
+        uu={update}
+        setUU={setUpdate}
       />
     </>
   );

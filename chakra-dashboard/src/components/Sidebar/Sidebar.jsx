@@ -30,7 +30,7 @@ const Sidebar = ({ filters, setFilters, update, setUpdate }) => {
   };
 
   const triggerUpdate = () => {
-    setUpdate(true);
+    setUpdate(update + 1);
   };
 
   return (
