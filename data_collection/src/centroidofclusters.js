@@ -19,16 +19,16 @@ var centroids={
   clusters.forEach(cluster => {
 
     var featuresForCluster = obj.features.filter(feature => feature.properties["cluster"] == cluster)
-    var verticies=[[]]
+    var vertices=[[]]
     featuresForCluster.forEach(feature => {
-        verticies[0].push(feature.geometry.coordinates)
+        vertices[0].push(feature.geometry.coordinates)
     })
-    verticies[0].push(verticies[0][0])
+    vertices[0].push(vertices[0][0])
     //console.log(verticies[0])
-    console.log(verticies[0].length)
-    var polygon=turf.polygon(verticies)
+    console.log(vertices[0].length)
+    var polygon=turf.polygon(vertices)
 
-    centroids.features.push(turf.centroid(polygon))
+    centroids.features.push(turf.centerOfMass(polygon,{"count": vertices[0].length}))
 
   })
 
