@@ -9,7 +9,7 @@ fs.ensureDirSync(outputPath);
 
 
 
-const clusters = [0,1,2,3,4,5,7,8,9]
+const clusters = [0,1,2,4,5,7,8,9]
 var counts = []
 
 var centroids={
