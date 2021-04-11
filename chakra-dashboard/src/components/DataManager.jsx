@@ -9,7 +9,7 @@ const DataManager = () => {
     return (
         <>
             <Sidebar filters={filters} setFilters={setFilters} />
-            <MapComponent filters={filters} setFilters={setFilters} />
+            {/* <MapComponent filters={filters} setFilters={setFilters} /> */}
         </>
     )
 
