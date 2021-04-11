@@ -10,6 +10,7 @@ fs.ensureDirSync(outputPath);
 
 
 const clusters = [0,1,2,3,4,5,7,8,9]
+var counts = []
 
 var centroids={
     type: "FeatureCollection",
@@ -27,9 +28,15 @@ var centroids={
     //console.log(verticies[0])
     console.log(vertices[0].length)
     var polygon=turf.polygon(vertices)
-    var options={"count": vertices[0].length}
-    centroids.features.push(turf.centerOfMass(polygon,options))
+    // var options={"count": vertices[0].length}
+    counts.push(vertices[0].length)
+    centroids.features.push(turf.centerOfMass(polygon))
 
+  })
+
+  var index = 0
+  centroids.features.forEach(feature => {
+    feature.properties["count"] = counts[index++]
   })
 
 //append the centroid of each cluster to centroids
