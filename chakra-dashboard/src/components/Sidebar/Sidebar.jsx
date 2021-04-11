@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-
+import './sidebar-style.css';
 import { RegisterForm } from './registerForm';
 import { DividerWithText } from './dividerWithText';
 
@@ -13,18 +13,20 @@ import {
 
 import FilterForm from './FilterForm';
 
-const Sidebar = ({ filters, setFilters }) => {
-  const [countID, setCountID] = useState(0);
+const Sidebar = ({ filters, setFilters, update, setUpdate }) => {
+  const [countID, setCountID] = useState(1);
 
   const newFilter = () => {
     setFilters({ ...filters, [countID]: { id: countID } });
     setCountID(countID + 1);
   };
 
-  useEffect(() => {}, []);
+  const triggerUpdate = () => {
+    setUpdate(true);
+  };
 
   return (
-    <div>
+    <div className="side">
       <Box maxW={{ sm: 'md' }} mx={{ sm: 'auto' }} mt="8" w={{ sm: 'full' }}>
         <Box
           bg={mode('white', 'gray.700')}
@@ -35,13 +37,12 @@ const Sidebar = ({ filters, setFilters }) => {
         >
           {Object.keys(filters).map(f => (
             <FilterForm
-              key={f.id}
-              id={f.id}
+              key={f}
+              id={f}
               filters={filters}
               setFilter={setFilters}
             />
           ))}
-          <FilterForm filters={filters} setFilters={setFilters} />
           <DividerWithText mt="6"></DividerWithText>
           <Button
             onClick={() => {
@@ -51,7 +52,13 @@ const Sidebar = ({ filters, setFilters }) => {
             Add Filter
           </Button>
           {/* figure something out for this later */}
-          <Button>Apply Filters</Button>
+          <Button
+            onClick={() => {
+              triggerUpdate();
+            }}
+          >
+            Apply Filters
+          </Button>
           {/* <RegisterForm />
                     <DividerWithText mt="6">or continue with</DividerWithText>
                     <SimpleGrid mt="6" columns={1} spacing="3">
