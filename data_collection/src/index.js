@@ -27,7 +27,7 @@ axios.get(url).then((res) => {
     master.features.push(feature);
   });
 
-  years = years.sort().reverse().slice(1, 11);
+  years = years.sort().reverse().slice(1, 5);
 
   years.forEach((year) => {
     var filename = `crashes_${year}.geojson`;
