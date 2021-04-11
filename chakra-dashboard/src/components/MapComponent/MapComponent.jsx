@@ -13,13 +13,13 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
   const mapContainer = useRef();
   const [lng, setLng] = useState(-77.0369);
   const [lat, setLat] = useState(38.9072);
-  const [zoom, setZoom] = useState(9);
+  const [zoom, setZoom] = useState(11);
 
   // listener for update
   useEffect(() => {
     if (update == true) {
       setUpdate(false);
-      console.log('bruh');
+      console.log(filters);
       // apply the filters here or something
     }
   }, [update]);
@@ -38,7 +38,6 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
         type: 'geojson',
         data: './crashes_2021.geojson',
       });
-      console.log('brudda');
       map.addLayer({
         id: 'route',
         type: 'circle',

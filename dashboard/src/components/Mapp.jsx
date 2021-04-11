@@ -27,7 +27,7 @@ const Mapp = () => {
                 "type": "geojson",
                 "data": "./crashes_2021.geojson"
             });
-            console.log("brudda")
+            ("brudda")
 
             map.addLayer({
                 "id": "crashes-heat",

@@ -7,6 +7,7 @@ const DataManager = () => {
   const [filters, setFilters] = useState({
     0: { id: 0, year: '2020', party: 'bike', fatality: 'yes' },
   });
+
   const [update, setUpdate] = useState(false);
 
   return (

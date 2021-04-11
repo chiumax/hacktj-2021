@@ -11,6 +11,14 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+} from '@chakra-ui/react';
+
 import FilterForm from './FilterForm';
 
 const Sidebar = ({ filters, setFilters, update, setUpdate }) => {
@@ -35,29 +43,43 @@ const Sidebar = ({ filters, setFilters, update, setUpdate }) => {
           shadow="base"
           rounded={{ sm: 'lg' }}
         >
-          {Object.keys(filters).map(f => (
-            <FilterForm
-              key={f}
-              id={f}
-              filters={filters}
-              setFilter={setFilters}
-            />
-          ))}
-          <DividerWithText mt="6"></DividerWithText>
+          <Accordion>
+            {Object.keys(filters).map((f, i) => (
+              <AccordionItem>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left">
+                    Filter {parseInt(i) + 1}
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+
+                <AccordionPanel>
+                  <FilterForm
+                    key={f}
+                    id={f}
+                    filters={filters}
+                    setFilters={setFilters}
+                  />
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
+          </Accordion>
+          {/* <DividerWithText mt="6"></DividerWithText> */}
           <Button
             onClick={() => {
               newFilter();
             }}
           >
-            Add Filter
+            Add
           </Button>
           {/* figure something out for this later */}
           <Button
+            colorScheme="green"
             onClick={() => {
               triggerUpdate();
             }}
           >
-            Apply Filters
+            Apply
           </Button>
           {/* <RegisterForm />
                     <DividerWithText mt="6">or continue with</DividerWithText>
