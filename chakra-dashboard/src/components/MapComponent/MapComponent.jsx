@@ -56,10 +56,11 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
         let filter = ['any'];
         // filter years
         for (let year in filters[key].year) {
-          filter.push(['==', 'YEAR', year]);
+          filter.push(['==', 'YEAR', String(filters[key].year[year])]);
         }
         // filter party
         for (let party in filters[key].party) {
+          party = filters[key].party[party];
           if (party == 'cycle') {
             filter.push(['>', 'TOTAL_BICYCLES', 0]);
           }
@@ -69,6 +70,7 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
         }
         // filter fatality
         for (let fatality in filters[key].fatality) {
+          fatality = filters[key].fatality[fatality];
           if (fatality == 'major') {
             filter.push(['>', 'MAJORINJURIES_PEDESTRIAN', 0]);
             filter.push(['>', 'MAJORINJURIES_BICYCLIST', 0]);
@@ -80,7 +82,7 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
         }
 
         mapObj.addLayer({
-          id: 'route',
+          id: key,
           type: 'circle',
           source: 'route',
           paint: {
@@ -89,6 +91,7 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
           },
           filter: filter,
         });
+        console.log('layer added!!!');
         count++;
       }
     }
@@ -107,8 +110,19 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
     map.on('load', function () {
       map.addSource('route', {
         type: 'geojson',
-        data: './crashes.geojson',
+        data: './crashes_2021.geojson',
       });
+
+      // map.addLayer({
+      //   id: 'res',
+      //   type: 'circle',
+      //   source: 'route',
+      //   paint: {
+      //     'circle-radius': 5,
+      //     'circle-color': colors[0],
+      //   },
+      //   filter: ['any', ['==', 'YEAR', '2021']],
+      // });
     });
 
     map.on('move', () => {
