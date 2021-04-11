@@ -13,7 +13,10 @@ var master = {
   type: "FeatureCollection",
   features: [],
 };
-
+var fiveyears = {
+  type: "FeatureCollection",
+  features: [],
+};
 axios.get(url).then((res) => {
   console.log(res.data.features[0].properties["REPORTDATE"]);
 
@@ -35,6 +38,9 @@ axios.get(url).then((res) => {
     var featuresForYear = master.features.filter(
       (feature) => feature.properties["REPORTDATE"].slice(0, 4) == year
     );
+    featuresForYear.forEach((feature) => {
+      fiveyears.features.push(feature)
+    })
 
     var toWrite = {
       type: "FeatureCollection",
@@ -50,4 +56,9 @@ axios.get(url).then((res) => {
     path.join(outputPath, "crashes.geojson"),
     JSON.stringify(master)
   );
+  fs.writeFileSync(
+    path.join(outputPath, "fiveyearcrashes.geojson"),
+    JSON.stringify(fiveyears)
+  );
+
 });

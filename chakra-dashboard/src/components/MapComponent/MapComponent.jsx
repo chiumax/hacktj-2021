@@ -17,17 +17,94 @@ const Mapp = ({ filters, setFilters, uu, setUU }) => {
   const [snapshot, setSnapshot] = useState({});
   const [mapObj, setMapObj] = useState();
 
-  const colors = [
-    '#1A2E33',
-    '#A58D7C',
-    '#FF6F3F',
-    '#E5D8CE',
-    '#FFAF3F',
-    '#FFFFFF',
-    '#F79F66',
-    '#FF3F46',
-    '#1A2E33',
-    '#FFFFFF',
+  const colors = ['#264653', '#2A9D8F', '#E9C46A', '#F4A261', '#E76F51'];
+
+  const heatmap_colors = [
+    [
+      'interpolate',
+      ['linear'],
+      ['heatmap-density'],
+      0,
+      'rgba(33,102,172,0)',
+      0.2,
+      '#264653',
+      0.4,
+      '#2D5261',
+      0.6,
+      '#67BEE0',
+      0.8,
+      '#6DC9ED',
+      1,
+      '#5BA8C7',
+    ],
+    [
+      'interpolate',
+      ['linear'],
+      ['heatmap-density'],
+      0,
+      'rgba(33,102,172,0)',
+      0.2,
+      '#2A9D8F',
+      0.4,
+      '#1A6159',
+      0.6,
+      '#3DE0CD',
+      0.8,
+      '#40EDD9',
+      1,
+      '#36C7B6',
+    ],
+    [
+      'interpolate',
+      ['linear'],
+      ['heatmap-density'],
+      0,
+      'rgba(33,102,172,0)',
+      0.2,
+      '#E9C46A',
+      0.4,
+      '#61522C',
+      0.6,
+      '#E0BD65',
+      0.8,
+      '#EDC86B',
+      1,
+      '#C7A85A',
+    ],
+    [
+      'interpolate',
+      ['linear'],
+      ['heatmap-density'],
+      0,
+      'rgba(33,102,172,0)',
+      0.2,
+      '#F4A261',
+      0.4,
+      '#614127',
+      0.6,
+      '#E0965A',
+      0.8,
+      '#ED9F5F',
+      1,
+      '#C78550',
+    ],
+    [
+      'interpolate',
+      ['linear'],
+      ['heatmap-density'],
+      0,
+      'rgba(33,102,172,0)',
+      0.2,
+      '#E76F51',
+      0.4,
+      '#612F22',
+      0.6,
+      '#E06C4F',
+      0.8,
+      '#ED7253',
+      1,
+      '#C75F46',
+    ],
   ];
 
   // listener for update
@@ -94,6 +171,18 @@ const Mapp = ({ filters, setFilters, uu, setUU }) => {
           'circle-color',
           colors[index % colors.length]
         );
+
+        mapObj.setFilter(String(key) + 'h', filter);
+        mapObj.setPaintProperty(
+          String(key) + 'h',
+          'heatmap-color',
+          heatmap_colors[index % colors.length]
+        );
+        // mapObj.setPaintProperty(
+        //   String(key) + 'h',
+        //   'circle-color',
+        //   colors[index % colors.length]
+        // );
       }
 
       console.log(filter);
@@ -103,11 +192,50 @@ const Mapp = ({ filters, setFilters, uu, setUU }) => {
           id: key,
           type: 'circle',
           source: 'route',
+          minzoom: 15,
           paint: {
             'circle-radius': 5,
             'circle-color': colors[index % colors.length],
           },
           filter: filter,
+        });
+
+        mapObj.addLayer({
+          id: key + 'h',
+          type: 'heatmap',
+          source: 'route',
+          maxzoom: 16,
+          filter: filter,
+          paint: {
+            'heatmap-weight': {
+              property: 'dbh',
+              type: 'exponential',
+              stops: [
+                [1, 0],
+                [62, 1],
+              ],
+            },
+            'heatmap-intensity': {
+              stops: [
+                [11, 1],
+                [15, 3],
+              ],
+            },
+            'heatmap-color': heatmap_colors[index % colors.length],
+            'heatmap-radius': {
+              stops: [
+                [11, 15],
+                [15, 20],
+              ],
+            },
+            'heatmap-opacity': {
+              default: 1,
+              stops: [
+                [14, 1],
+                [15, 0],
+              ],
+            },
+          },
         });
         console.log('layer added!!!');
       }
@@ -122,6 +250,7 @@ const Mapp = ({ filters, setFilters, uu, setUU }) => {
       if (filters[key] == undefined) {
         let filter = ['==', 'not_defined', 1];
         mapObj.setFilter(String(key), filter);
+        mapObj.setFilter(String(key) + 'h', filter);
       }
     });
     console.log('this is snapshot of filters');
@@ -143,7 +272,7 @@ const Mapp = ({ filters, setFilters, uu, setUU }) => {
     map.on('load', function () {
       map.addSource('route', {
         type: 'geojson',
-        data: './crashes_2021.geojson',
+        data: './fiveyearcrashes.geojson',
       });
 
       // map.addLayer({

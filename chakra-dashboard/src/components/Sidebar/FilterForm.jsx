@@ -51,12 +51,6 @@ const FilterForm = ({ filters, setFilters, id }) => {
       >
         <FormLabel>Year</FormLabel>
         <SimpleGrid spacing={5} columns={2}>
-          <Checkbox value="2012">2012</Checkbox>
-          <Checkbox value="2013">2013</Checkbox>
-          <Checkbox value="2014">2014</Checkbox>
-          <Checkbox value="2015">2015</Checkbox>
-          <Checkbox value="2016">2016</Checkbox>
-          <Checkbox value="2017">2017</Checkbox>
           <Checkbox value="2018">2018</Checkbox>
           <Checkbox value="2019">2019</Checkbox>
           <Checkbox value="2020">2020</Checkbox>
@@ -83,7 +77,7 @@ const FilterForm = ({ filters, setFilters, id }) => {
       >
         <FormLabel>Fatality</FormLabel>
         <SimpleGrid spacing={5} columns={2}>
-          <Checkbox value="fatal">Fatal Injury</Checkbox>
+          <Checkbox value="fatal">Major Injury</Checkbox>
           <Checkbox value="minor">Minor Injury</Checkbox>
         </SimpleGrid>
       </CheckboxGroup>

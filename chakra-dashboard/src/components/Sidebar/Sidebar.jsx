@@ -21,7 +21,7 @@ import {
 
 import FilterForm from './FilterForm';
 
-const Sidebar = ({ filters, setFilters, update, setUpdate }) => {
+const Sidebar = ({ filters, setFilters, update, setUpdate, colors }) => {
   const [countID, setCountID] = useState(1);
 
   const newFilter = () => {
@@ -47,8 +47,8 @@ const Sidebar = ({ filters, setFilters, update, setUpdate }) => {
             {Object.keys(filters).map((f, i) => (
               <AccordionItem key={f}>
                 <AccordionButton>
-                  <Box flex="1" textAlign="left">
-                    Filter {parseInt(i) + 1}
+                  <Box flex="1" textAlign="left" color={`${colors[i]}`}>
+                    Filter {parseInt(i) + 1} {console.log(colors[i])}
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>

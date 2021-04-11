@@ -7,7 +7,7 @@ const DataManager = () => {
   const [filters, setFilters] = useState({
     0: { id: 0 },
   });
-
+  const colors = ['#4b8aa3', '#2A9D8F', '#E9C46A', '#F4A261', '#E76F51'];
   const [update, setUpdate] = useState(0);
 
   return (
@@ -17,6 +17,7 @@ const DataManager = () => {
         setFilters={setFilters}
         update={update}
         setUpdate={setUpdate}
+        colors={colors}
       />
       <MapComponent
         filters={filters}
