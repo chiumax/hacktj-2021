@@ -9,6 +9,8 @@
     "start": "node src/index.js"
   },
   "dependencies": {
+    "@turf/clusters-kmeans": "^6.3.0",
+    "@turf/turf": "^6.3.0",
     "axios": "^0.21.1",
     "fs-extra": "^9.1.0"
   }
