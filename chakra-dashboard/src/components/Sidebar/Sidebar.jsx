@@ -45,7 +45,7 @@ const Sidebar = ({ filters, setFilters, update, setUpdate }) => {
         >
           <Accordion>
             {Object.keys(filters).map((f, i) => (
-              <AccordionItem>
+              <AccordionItem key={f}>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
                     Filter {parseInt(i) + 1}

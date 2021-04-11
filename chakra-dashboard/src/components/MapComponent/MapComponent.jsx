@@ -14,13 +14,83 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
   const [lng, setLng] = useState(-77.0369);
   const [lat, setLat] = useState(38.9072);
   const [zoom, setZoom] = useState(11);
+  const [snapshot, setSnapshot] = useState({});
+  const [mapObj, setMapObj] = useState();
+
+  const colors = [
+    '#1A2E33',
+    '#A58D7C',
+    '#FF6F3F',
+    '#E5D8CE',
+    '#FFAF3F',
+    '#FFFFFF',
+    '#F79F66',
+    '#FF3F46',
+    '#1A2E33',
+    '#FFFFFF',
+  ];
 
   // listener for update
   useEffect(() => {
     if (update == true) {
+      // reset layers
+      let keys = Object.keys(snapshot);
+      if (keys.length > 0) {
+        for (let key in keys) {
+          mapObj.removeLayer(key);
+        }
+      }
       setUpdate(false);
+      setSnapshot(filters);
       console.log(filters);
       // apply the filters here or something
+      // when update, remove all existing layers and re gen them
+      // use a snapshot hook
+      // filter years
+      // filter party
+      // filter fatality
+
+      keys = Object.keys(filters);
+      let count = 0;
+      for (let key in keys) {
+        let filter = ['any'];
+        // filter years
+        for (let year in filters[key].year) {
+          filter.push(['==', 'YEAR', year]);
+        }
+        // filter party
+        for (let party in filters[key].party) {
+          if (party == 'cycle') {
+            filter.push(['>', 'TOTAL_BICYCLES', 0]);
+          }
+          if (party == 'pedestrian') {
+            filter.push(['>', 'TOTAL_PEDESTRIANS', 0]);
+          }
+        }
+        // filter fatality
+        for (let fatality in filters[key].fatality) {
+          if (fatality == 'major') {
+            filter.push(['>', 'MAJORINJURIES_PEDESTRIAN', 0]);
+            filter.push(['>', 'MAJORINJURIES_BICYCLIST', 0]);
+          }
+          if (fatality == 'minor') {
+            filter.push(['>', 'MINORINJURIES_PEDESTRIAN', 0]);
+            filter.push(['>', 'MINORINJURIES_BICYCLIST', 0]);
+          }
+        }
+
+        mapObj.addLayer({
+          id: 'route',
+          type: 'circle',
+          source: 'route',
+          paint: {
+            'circle-radius': 5,
+            'circle-color': colors[count],
+          },
+          filter: filter,
+        });
+        count++;
+      }
     }
   }, [update]);
 
@@ -32,20 +102,12 @@ const Mapp = ({ filters, setFilters, update, setUpdate }) => {
       center: [lng, lat],
       zoom: zoom,
     });
+    setMapObj(map);
 
     map.on('load', function () {
       map.addSource('route', {
         type: 'geojson',
-        data: './crashes_2021.geojson',
-      });
-      map.addLayer({
-        id: 'route',
-        type: 'circle',
-        source: 'route',
-        paint: {
-          'circle-radius': 10,
-          'circle-color': '#ff0000',
-        },
+        data: './crashes.geojson',
       });
     });
 
