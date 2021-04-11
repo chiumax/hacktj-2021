@@ -27,10 +27,11 @@ var centroids={
     vertices[0].push(vertices[0][0])
     //console.log(verticies[0])
     console.log(vertices[0].length)
-    var polygon=turf.polygon(vertices)
+    //var polygon=turf.polygon(vertices)
+    var points = turf.points(vertices[0])
     // var options={"count": vertices[0].length}
     counts.push(vertices[0].length)
-    centroids.features.push(turf.centerOfMass(polygon))
+    centroids.features.push(turf.center(points))
 
   })
 
